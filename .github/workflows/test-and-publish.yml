@@ -30,8 +30,11 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
-
+        run: npm install
+      
+      - name: Install peer dependencies
+        run: npm install react@^17.0.0
+      
       - name: Run tests
         run: npm test
 
@@ -58,7 +61,10 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
+
+      - name: Install peer dependencies
+        run: npm install react@^17.0.0
 
       - name: Build package
         run: npm run build
