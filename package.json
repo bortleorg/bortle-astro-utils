@@ -1,0 +1,33 @@
+{
+  "name": "bortle-astro-utils",
+  "version": "1.0.0",
+  "description": "A TypeScript library for astrophotography utilities",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bortle/bortle-astro-utils.git"
+  },
+  "keywords": [
+    "astrophotography",
+    "typescript",
+    "utilities"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bortle/bortle-astro-utils/issues"
+  },
+  "homepage": "https://github.com/bortle/bortle-astro-utils#readme",
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "typescript": "^4.0.0"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0"
+  }
+}
