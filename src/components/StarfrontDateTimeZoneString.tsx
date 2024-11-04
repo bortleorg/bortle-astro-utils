@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useStarfrontDateTimeZoneContext } from "../hooks/useDateTimeContext";
-import StarfrontDateTime from "../utils/time";
+import StarfrontDateTime from "../classes/ObservatoryDateTime";
 
 export interface StarfrontDateTimeZoneStringProps {
   utcDate: Date | string | number;
@@ -21,7 +21,7 @@ const StarfrontDateTimeZoneString = (
   }, []);
 
   const toggleUnits = () => {
-    setStarfrontDateTimeZone((prevUnits) => {
+    setStarfrontDateTimeZone((prevUnits: any) => {
       if (prevUnits === "relative") {
         return "starfront";
       } else if (prevUnits === "starfront") {

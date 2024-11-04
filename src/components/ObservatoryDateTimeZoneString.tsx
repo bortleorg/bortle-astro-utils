@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useObservatoryDateTimeZoneContext } from "../hooks/useDateTimeContext";
-import ObservatoryDateTime from "../utils/time";
+import ObservatoryDateTime from "../classes/ObservatoryDateTime";
 
 export interface ObservatoryDateTimeZoneStringProps {
   utcDate: Date | string | number;
@@ -21,7 +21,7 @@ const ObservatoryDateTimeZoneString = (
   }, []);
 
   const toggleUnits = () => {
-    setObservatoryDateTimeZone((prevUnits) => {
+    setObservatoryDateTimeZone((prevUnits: any) => {
       if (prevUnits === "relative") {
         return "observatory";
       } else if (prevUnits === "observatory") {

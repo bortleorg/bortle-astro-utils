@@ -20,7 +20,7 @@ const TemperatureString = (props: TemperatureStringProps) => {
   const { temperatureUnits, setTemperatureUnits } = useTemperatureContext();
 
   const toggleUnits = () => {
-    setTemperatureUnits((prevUnits) => (prevUnits === "F" ? "C" : "F"));
+    setTemperatureUnits((prevUnits: TempUnits) => (prevUnits === "F" ? "C" : "F"));
   };
 
   const displayValue = () => {
