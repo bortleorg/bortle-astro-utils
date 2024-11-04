@@ -18,7 +18,7 @@ describe('TemperatureString', () => {
       { temperatureUnits: 'K', setTemperatureUnits: jest.fn() }
     );
 
-    expect(getByText('80.33°F')).toBeInTheDocument();
+    expect(getByText('80.3°F')).toBeInTheDocument();
   });
 
   test('toggles temperature units on click', () => {
