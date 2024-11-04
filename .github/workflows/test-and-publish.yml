@@ -33,7 +33,7 @@ jobs:
         run: npm install
       
       - name: Install peer dependencies
-        run: npm install react@^17.0.0
+        run: npm install react@^18.0.0
       
       - name: Run tests
         run: npm test
@@ -64,7 +64,7 @@ jobs:
         run: npm install
 
       - name: Install peer dependencies
-        run: npm install react@^17.0.0
+        run: npm install react@^18.0.0
 
       - name: Build package
         run: npm run build
