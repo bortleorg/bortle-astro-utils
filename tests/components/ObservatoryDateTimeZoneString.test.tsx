@@ -14,7 +14,7 @@ describe('ObservatoryDateTimeZoneString', () => {
     render(<TestComponent utcDate={new Date('2022-01-01T00:00:00Z')} />);
     fireEvent.click(screen.getByText(/almost \d+ years ago/i));
     fireEvent.click(screen.getByText(/12\/31\/21, .+ PM CST/i));
-    fireEvent.click(screen.getByText(/12\/31\/21, .+ PM PST/i));
+    fireEvent.click(screen.getByText(/12\/31\/21, .+ PM EST/i));
     fireEvent.click(screen.getByText(/1\/1\/22, .+ AM UTC/i));
     fireEvent.click(screen.getByText(/almost \d+ years ago/i));
   });

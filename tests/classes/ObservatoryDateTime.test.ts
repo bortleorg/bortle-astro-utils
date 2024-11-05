@@ -27,8 +27,8 @@ describe('ObservatoryDateTime', () => {
     const date = new Date('2022-01-01T00:00:00Z');
     const observatoryDateTime = new ObservatoryDateTime(date, 'America/Chicago');
     expect(observatoryDateTime.homeTimeZone).toBe('America/Chicago');
-    expect(getLocalTimeZone()).toBe('America/Los_Angeles');
-    expect(observatoryDateTime.getLocalDateTime()).toMatch("12/31/21, 4:00:00 PM PST");
+    expect(getLocalTimeZone()).toBe('America/New_York');
+    expect(observatoryDateTime.getLocalDateTime()).toMatch("12/31/21, 7:00:00 PM EST");
   });
 
   it('should return home timezone date and time', () => {
