@@ -1,4 +1,6 @@
 module.exports = {
   testEnvironment: 'jsdom',
-  timezone: 'US/Pacific',
+  "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.ts"
+    ],
 };
