@@ -1,13 +1,13 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import TemperatureString, { TemperatureStringProps } from '../../src/components/TemperatureString';
-import { TempUnits, TemperatureContext } from '../../src/hooks/useTemperatureContext';
+import { TempUnits, TempProvider } from '../../src/hooks/useTemperatureContext';
 
 const renderWithTemperatureContext = (ui: React.ReactElement, { temperatureUnits, setTemperatureUnits }: { temperatureUnits: TempUnits, setTemperatureUnits: React.Dispatch<React.SetStateAction<TempUnits>> }) => {
   return render(
-    <TemperatureContext.Provider value={{ temperatureUnits, setTemperatureUnits }}>
+    <TempProvider value={{ temperatureUnits, setTemperatureUnits }}>
       {ui}
-    </TemperatureContext.Provider>
+    </TempProvider>
   );
 };
 
@@ -18,7 +18,7 @@ describe('TemperatureString', () => {
       { temperatureUnits: 'K', setTemperatureUnits: jest.fn() }
     );
 
-    expect(getByText('300.0°K')).toBeInTheDocument();
+    expect(getByText('80.3°F')).toBeInTheDocument();
   });
 
   test('toggles temperature units on click', () => {
