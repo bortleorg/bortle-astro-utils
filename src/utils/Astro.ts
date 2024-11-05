@@ -445,11 +445,11 @@ export class AstroCalc {
     focalRatio2: number,
   ) {
     // Calculate the pixel scale in arcseconds per pixel
-    const pixelScale1 = AstroUtils.calculatePixelScale(
+    const pixelScale1 = AstroCalc.calculatePixelScale(
       pixelSize1,
       focalLength1,
     );
-    const pixelScale2 = AstroUtils.calculatePixelScale(
+    const pixelScale2 = AstroCalc.calculatePixelScale(
       pixelSize2,
       focalLength2,
     );
