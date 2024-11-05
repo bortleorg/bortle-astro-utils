@@ -62,7 +62,7 @@ describe("AstroCalc", () => {
 
   describe("getLunarInfo", () => {
     it("should return lunar information", () => {
-      const lunarInfo = AstroCalc.getLunarInfo(0, 0, 0);
+      const lunarInfo = AstroCalc.getLunarInfo(0, 0, 0, "America/New_York");
       expect(lunarInfo).toHaveProperty("moonrise");
       expect(lunarInfo).toHaveProperty("moonset");
       expect(lunarInfo).toHaveProperty("illuminationInfo");
@@ -78,7 +78,7 @@ describe("AstroCalc", () => {
 
   describe("getSolarTimes", () => {
     it("should return solar times", () => {
-      const solarTimes = AstroCalc.getSolarTimes(0, 0, 0);
+      const solarTimes = AstroCalc.getSolarTimes(0, 0, 0, "America/New_York");
       expect(solarTimes).toHaveProperty("sunrise");
       expect(solarTimes).toHaveProperty("sunset");
       expect(solarTimes).toHaveProperty("nauticalDawn");
