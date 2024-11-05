@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useObservatoryDateTimeZoneContext } from "../hooks/useDateTimeContext";
+import { useObservatoryDateTimeDisplayContext } from "../hooks/useObservatoryDateTimeContext";
 import ObservatoryDateTime from "../classes/ObservatoryDateTime";
 
 export interface ObservatoryDateTimeZoneStringProps {
@@ -9,8 +9,8 @@ export interface ObservatoryDateTimeZoneStringProps {
 const ObservatoryDateTimeZoneString = (
   props: ObservatoryDateTimeZoneStringProps,
 ) => {
-  const { observatoryDateTimeZone, setObservatoryDateTimeZone } =
-    useObservatoryDateTimeZoneContext();
+  const { observatoryDateTimeDisplay, setObservatoryDateTimeDisplay } =
+    useObservatoryDateTimeDisplayContext();
   const [time, setTime] = React.useState(Date.now());
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const ObservatoryDateTimeZoneString = (
   }, []);
 
   const toggleUnits = () => {
-    setObservatoryDateTimeZone((prevUnits: any) => {
+    setObservatoryDateTimeDisplay((prevUnits: any) => {
       if (prevUnits === "relative") {
         return "observatory";
       } else if (prevUnits === "observatory") {
@@ -34,14 +34,14 @@ const ObservatoryDateTimeZoneString = (
     });
   };
 
-  const observatoryDateTime = new ObservatoryDateTime(props.utcDate);
+  const observatoryDateTime = new ObservatoryDateTime(props.utcDate, "America/Chicago");
 
   const displayValue = () => {
-    if (observatoryDateTimeZone === "local") {
+    if (observatoryDateTimeDisplay === "local") {
       return observatoryDateTime.getLocalDateTime();
-    } else if (observatoryDateTimeZone === "observatory") {
+    } else if (observatoryDateTimeDisplay === "observatory") {
       return observatoryDateTime.getHomeDateTime();
-    } else if (observatoryDateTimeZone === "relative") {
+    } else if (observatoryDateTimeDisplay === "relative") {
       return observatoryDateTime.getRelativeTime();
     }
     return observatoryDateTime.getUTCDateTime();

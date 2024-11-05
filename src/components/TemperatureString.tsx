@@ -48,10 +48,6 @@ const TemperatureString = (props: TemperatureStringProps) => {
     return props.temperature;
   };
 
-  if (!displayValue()) {
-    return <span>N/A</span>;
-  }
-
   return (
     <span onClick={toggleUnits}>
       {displayValue().toFixed(1)}°{temperatureUnits}

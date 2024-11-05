@@ -25,18 +25,23 @@
   },
   "homepage": "https://github.com/bortle/bortle-astro-utils#readme",
   "devDependencies": {
-    "@types/react": "^17.0.0",
-    "typescript": "^4.0.0",
-    "@internationalized/date": "^3.0.0",
-    "date-fns": "^2.0.0",
-    "jest": "^27.0.0",
-    "@testing-library/react": "^16.0.0",
-    "@testing-library/dom": "^8.0.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "@types/jest": "^27.0.0",
+    "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.0.0",
-    "@babel/preset-env": "^7.0.0"
+    "@internationalized/date": "^3.0.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.0",
+    "@types/jest": "^27.0.0",
+    "@types/react": "^18.0.0",
+    "date-fns": "^2.0.0",
+    "jest": "^27.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "typescript": "^4.0.0"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.ts"
+    ]
   }
 }

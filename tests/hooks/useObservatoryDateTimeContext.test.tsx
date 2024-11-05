@@ -23,8 +23,8 @@ describe('ObservatoryDateTimeDisplayContext', () => {
       </ObservatoryDateTimeDisplayProvider>
     );
 
-    expect(screen.getByText(/Current Display: relative/i)).toBeInTheDocument();
-    expect(screen.getByText(/Current Time Zone: UTC/i)).toBeInTheDocument();
+    expect(screen.getByText(/Current Display: relative/i)).not.toBeNull();
+    expect(screen.getByText(/Current Time Zone: UTC/i)).not.toBeNull();
   });
 
   it('should update observatoryDateTimeDisplay', () => {
@@ -35,7 +35,7 @@ describe('ObservatoryDateTimeDisplayContext', () => {
     );
 
     fireEvent.click(screen.getByText(/Set to UTC/i));
-    expect(screen.getByText(/Current Display: utc/i)).toBeInTheDocument();
+    expect(screen.getByText(/Current Display: utc/i)).not.toBeNull();
   });
 
   it('should update observatoryTimeZone', () => {
@@ -46,6 +46,6 @@ describe('ObservatoryDateTimeDisplayContext', () => {
     );
 
     fireEvent.click(screen.getByText(/Set Time Zone to New York/i));
-    expect(screen.getByText(/Current Time Zone: America\/New_York/i)).toBeInTheDocument();
+    expect(screen.getByText(/Current Time Zone: America\/New_York/i)).not.toBeNull();
   });
 });

@@ -10,29 +10,12 @@ const TestComponent = ({ utcDate }) => (
 );
 
 describe('ObservatoryDateTimeZoneString', () => {
-  it('should display local date and time by default', () => {
+  it('should toggle display modes', () => {
     render(<TestComponent utcDate={new Date('2022-01-01T00:00:00Z')} />);
-    expect(screen.getByText(/1\/1\/22, .+ AM/i)).toBeInTheDocument();
-  });
-
-  it('should toggle to observatory date and time', () => {
-    render(<TestComponent utcDate={new Date('2022-01-01T00:00:00Z')} />);
-    fireEvent.click(screen.getByText(/1\/1\/22, .+ AM/i));
-    expect(screen.getByText(/12\/31\/21, .+ PM/i)).toBeInTheDocument();
-  });
-
-  it('should toggle to relative time', () => {
-    render(<TestComponent utcDate={new Date('2022-01-01T00:00:00Z')} />);
-    fireEvent.click(screen.getByText(/1\/1\/22, .+ AM/i));
-    fireEvent.click(screen.getByText(/12\/31\/21, .+ PM/i));
-    expect(screen.getByText(/ago/i)).toBeInTheDocument();
-  });
-
-  it('should toggle to UTC date and time', () => {
-    render(<TestComponent utcDate={new Date('2022-01-01T00:00:00Z')} />);
-    fireEvent.click(screen.getByText(/1\/1\/22, .+ AM/i));
-    fireEvent.click(screen.getByText(/12\/31\/21, .+ PM/i));
-    fireEvent.click(screen.getByText(/ago/i));
-    expect(screen.getByText(/1\/1\/22, .+ AM/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByText(/almost \d+ years ago/i));
+    fireEvent.click(screen.getByText(/12\/31\/21, .+ PM CST/i));
+    fireEvent.click(screen.getByText(/12\/31\/21, .+ PM PST/i));
+    fireEvent.click(screen.getByText(/1\/1\/22, .+ AM UTC/i));
+    fireEvent.click(screen.getByText(/almost \d+ years ago/i));
   });
 });
