@@ -8,7 +8,7 @@ import {
   Illumination,
 } from "astronomy-engine";
 import Decimal from "decimal.js";
-import { ObservatoryDateTime } from "bortle-astro-utils";
+import { ObservatoryDateTime } from "../classes/ObservatoryDateTime";
 
 export interface SolarTimes {
   sunset: ObservatoryDateTime | null;
