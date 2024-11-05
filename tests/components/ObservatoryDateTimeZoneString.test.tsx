@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import ObservatoryDateTimeZoneString from '../../src/components/ObservatoryDateTimeZoneString';
+import { ObservatoryDateTimeZoneString } from '../../src/components/ObservatoryDateTimeZoneString';
 import { ObservatoryDateTimeDisplayProvider } from '../../src/hooks/useObservatoryDateTimeContext';
 
 const TestComponent = ({ utcDate }) => (

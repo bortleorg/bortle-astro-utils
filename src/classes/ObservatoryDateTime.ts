@@ -1,7 +1,7 @@
 import { getLocalTimeZone } from "@internationalized/date";
 import { formatDistanceToNow } from "date-fns";
 
-class ObservatoryDateTime {
+export class ObservatoryDateTime {
   utcDate: Date;
   homeTimeZone: string;
 
@@ -51,5 +51,3 @@ class ObservatoryDateTime {
     return formatDistanceToNow(localDate, { addSuffix: true });
   }
 }
-
-export default ObservatoryDateTime;

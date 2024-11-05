@@ -1,5 +1,5 @@
 import { getLocalTimeZone } from "@internationalized/date";
-import ObservatoryDateTime from '../../src/classes/ObservatoryDateTime';
+import { ObservatoryDateTime } from '../../src/classes/ObservatoryDateTime';
 
 describe('ObservatoryDateTime', () => {
   it('should correctly initialize with a Date object', () => {

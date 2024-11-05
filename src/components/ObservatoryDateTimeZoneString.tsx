@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useObservatoryDateTimeDisplayContext } from "../hooks/useObservatoryDateTimeContext";
-import ObservatoryDateTime from "../classes/ObservatoryDateTime";
+import { ObservatoryDateTime } from "../classes/ObservatoryDateTime";
 
 export interface ObservatoryDateTimeZoneStringProps {
   utcDate: Date | string | number;
 }
 
-const ObservatoryDateTimeZoneString = (
+export const ObservatoryDateTimeZoneString = (
   props: ObservatoryDateTimeZoneStringProps,
 ) => {
   const { observatoryDateTimeDisplay, setObservatoryDateTimeDisplay } =
@@ -49,5 +49,3 @@ const ObservatoryDateTimeZoneString = (
 
   return <span onClick={toggleUnits}>{`${displayValue()}`}</span>;
 };
-
-export default ObservatoryDateTimeZoneString;

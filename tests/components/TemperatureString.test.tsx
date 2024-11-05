@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import TemperatureString, { TemperatureStringProps } from '../../src/components/TemperatureString';
+import { TemperatureString, TemperatureStringProps } from '../../src/components/TemperatureString';
 import { TempUnits, TempProvider } from '../../src/hooks/useTemperatureContext';
 
 const renderWithTemperatureContext = (ui: React.ReactElement) => {  

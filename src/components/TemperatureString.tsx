@@ -16,7 +16,7 @@ export interface TemperatureStringProps {
   units: TempUnits;
 }
 
-const TemperatureString = (props: TemperatureStringProps) => {
+export const TemperatureString = (props: TemperatureStringProps) => {
   const { temperatureUnits, setTemperatureUnits } = useTemperatureContext();
 
   const toggleUnits = () => {
@@ -54,5 +54,3 @@ const TemperatureString = (props: TemperatureStringProps) => {
     </span>
   );
 };
-
-export default TemperatureString;
