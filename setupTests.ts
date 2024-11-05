@@ -1,2 +1,5 @@
 import '@testing-library/jest-dom';
-process.env.TZ = 'America/Los_Angeles';
+
+module.exports = async () => {
+    process.env.TZ = 'America/Los_Angeles';
+};
