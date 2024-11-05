@@ -103,6 +103,7 @@ export class AstroCalc {
     latitude: number,
     longitude: number,
     altitude: number,
+    timeZone: string,
   ): LunarInfo {
     const observer = new Observer(latitude, longitude, altitude);
     const now = new Date();
@@ -138,9 +139,9 @@ export class AstroCalc {
 
     return {
       moonrise: moonriseEvent
-        ? new ObservatoryDateTime(moonriseEvent.date)
+        ? new ObservatoryDateTime(moonriseEvent.date, timeZone)
         : null,
-      moonset: moonsetEvent ? new ObservatoryDateTime(moonsetEvent.date) : null,
+      moonset: moonsetEvent ? new ObservatoryDateTime(moonsetEvent.date, timeZone) : null,
       illuminationInfo: {
         phaseAngle,
         fraction,
@@ -177,6 +178,7 @@ export class AstroCalc {
     latitude: number,
     longitude: number,
     altitude: number,
+    timeZone: string,
   ): SolarTimes {
     const observer = new Observer(latitude, longitude, altitude);
 
@@ -253,19 +255,19 @@ export class AstroCalc {
       : null;
 
     return {
-      sunrise: sunriseDate ? new ObservatoryDateTime(sunriseDate) : null,
-      sunset: sunsetDate ? new ObservatoryDateTime(sunsetDate) : null,
+      sunrise: sunriseDate ? new ObservatoryDateTime(sunriseDate, timeZone) : null,
+      sunset: sunsetDate ? new ObservatoryDateTime(sunsetDate, timeZone) : null,
       nauticalDawn: nauticalDawnDate
-        ? new ObservatoryDateTime(nauticalDawnDate)
+        ? new ObservatoryDateTime(nauticalDawnDate, timeZone)
         : null,
       astronomicalDawn: astronomicalDawnDate
-        ? new ObservatoryDateTime(astronomicalDawnDate)
+        ? new ObservatoryDateTime(astronomicalDawnDate, timeZone)
         : null,
       nauticalDusk: nauticalDuskDate
-        ? new ObservatoryDateTime(nauticalDuskDate)
+        ? new ObservatoryDateTime(nauticalDuskDate, timeZone)
         : null,
       astronomicalDusk: astronomicalDuskDate
-        ? new ObservatoryDateTime(astronomicalDuskDate)
+        ? new ObservatoryDateTime(astronomicalDuskDate, timeZone)
         : null,
     };
   }

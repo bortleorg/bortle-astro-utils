@@ -1,6 +1,6 @@
 import { Observer, Body, AstroTime, Horizon, SearchAltitude, SearchRiseSet, Illumination } from "astronomy-engine";
 import Decimal from "decimal.js";
-import { ObservatoryDateTime } from "bortle-astro-utils";
+import { ObservatoryDateTime } from "../../src/classes/ObservatoryDateTime";
 import { AstroCalc, AstroPoint, SolarTimes, LunarInfo, IlluminationInfo } from "../../src/utils/Astro";
 
 describe("AstroCalc", () => {
