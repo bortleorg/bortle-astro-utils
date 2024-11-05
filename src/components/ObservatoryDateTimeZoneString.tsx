@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useObservatoryDateTimeZoneContext } from "../hooks/useDateTimeContext";
+import { useObservatoryDateTimeDisplayContext } from "../hooks/useObservatoryDateTimeContext";
 import ObservatoryDateTime from "../classes/ObservatoryDateTime";
 
 export interface ObservatoryDateTimeZoneStringProps {
@@ -10,7 +10,7 @@ const ObservatoryDateTimeZoneString = (
   props: ObservatoryDateTimeZoneStringProps,
 ) => {
   const { observatoryDateTimeZone, setObservatoryDateTimeZone } =
-    useObservatoryDateTimeZoneContext();
+    useObservatoryDateTimeDisplayContext();
   const [time, setTime] = React.useState(Date.now());
 
   useEffect(() => {

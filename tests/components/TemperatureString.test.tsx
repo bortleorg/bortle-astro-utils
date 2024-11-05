@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import TemperatureString, { TemperatureStringProps } from '../../src/components/TemperatureString';
 import { TempUnits, TempProvider } from '../../src/hooks/useTemperatureContext';
 
