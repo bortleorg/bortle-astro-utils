@@ -6,7 +6,7 @@ import { TempUnits, TempProvider } from '../../src/hooks/useTemperatureContext';
 
 const renderWithTemperatureContext = (ui: React.ReactElement, { temperatureUnits, setTemperatureUnits }: { temperatureUnits: TempUnits, setTemperatureUnits: React.Dispatch<React.SetStateAction<TempUnits>> }) => {
   return render(
-    <TempProvider value={{ temperatureUnits, setTemperatureUnits }}>
+    <TempProvider>
       {ui}
     </TempProvider>
   );
