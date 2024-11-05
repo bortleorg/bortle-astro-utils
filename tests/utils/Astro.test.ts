@@ -1,6 +1,6 @@
 import { Observer, Body, AstroTime, Horizon, SearchAltitude, SearchRiseSet, Illumination } from "astronomy-engine";
 import Decimal from "decimal.js";
-import { ObservatoryDateTime } from "bortle-astro-utils";
+import { ObservatoryDateTime } from "../../src/classes/ObservatoryDateTime";
 import { AstroCalc, AstroPoint, SolarTimes, LunarInfo, IlluminationInfo } from "../../src/utils/Astro";
 
 describe("AstroCalc", () => {
@@ -62,7 +62,7 @@ describe("AstroCalc", () => {
 
   describe("getLunarInfo", () => {
     it("should return lunar information", () => {
-      const lunarInfo = AstroCalc.getLunarInfo(0, 0, 0);
+      const lunarInfo = AstroCalc.getLunarInfo(0, 0, 0, "America/New_York");
       expect(lunarInfo).toHaveProperty("moonrise");
       expect(lunarInfo).toHaveProperty("moonset");
       expect(lunarInfo).toHaveProperty("illuminationInfo");
@@ -78,7 +78,7 @@ describe("AstroCalc", () => {
 
   describe("getSolarTimes", () => {
     it("should return solar times", () => {
-      const solarTimes = AstroCalc.getSolarTimes(0, 0, 0);
+      const solarTimes = AstroCalc.getSolarTimes(0, 0, 0, "America/New_York");
       expect(solarTimes).toHaveProperty("sunrise");
       expect(solarTimes).toHaveProperty("sunset");
       expect(solarTimes).toHaveProperty("nauticalDawn");
