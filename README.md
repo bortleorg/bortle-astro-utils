@@ -33,10 +33,14 @@ import {
   getTransparencyDescription,
   getSeeingDescription,
   mpsas2bortle,
-  useStarfrontDateTimeZoneContext,
-  StarfrontDateTimeZoneProvider,
+  useObservatoryDateTimeDisplayContext,
+  ObservatoryDateTimeDisplayProvider,
   TemperatureString,
   ObservatoryDateTime,
+  ObservatoryDateTimeZoneString,
+  getSolarTimes,
+  getLunarInfo,
+  useTemperatureContext,
 } from "bortle-astro-utils";
 ```
 
@@ -71,23 +75,23 @@ const bortleScale = mpsas2bortle(21.5); // 3
 
 ```typescript
 import React from "react";
-import { StarfrontDateTimeZoneProvider, useStarfrontDateTimeZoneContext } from "bortle-astro-utils";
+import { ObservatoryDateTimeDisplayProvider, useObservatoryDateTimeDisplayContext } from "bortle-astro-utils";
 
 const App = () => {
   return (
-    <StarfrontDateTimeZoneProvider>
+    <ObservatoryDateTimeDisplayProvider>
       <MyComponent />
-    </StarfrontDateTimeZoneProvider>
+    </ObservatoryDateTimeDisplayProvider>
   );
 };
 
 const MyComponent = () => {
-  const { starfrontDateTimeZone, setStarfrontDateTimeZone } = useStarfrontDateTimeZoneContext();
+  const { observatoryDateTimeDisplay, setObservatoryDateTimeDisplay } = useObservatoryDateTimeDisplayContext();
 
   return (
     <div>
-      <p>Current Time Zone: {starfrontDateTimeZone}</p>
-      <button onClick={() => setStarfrontDateTimeZone("utc")}>Set to UTC</button>
+      <p>Current Display: {observatoryDateTimeDisplay}</p>
+      <button onClick={() => setObservatoryDateTimeDisplay("local")}>Set to Local</button>
     </div>
   );
 };
@@ -111,7 +115,87 @@ import { ObservatoryDateTime } from "bortle-astro-utils";
 
 const dateTime = new ObservatoryDateTime(new Date(), "America/Chicago");
 console.log(dateTime.getLocalDateTime()); // Local date and time
-console.log(dateTime.getChicagoDateTime()); // Chicago date and time
+console.log(dateTime.getHomeDateTime()); // Home date and time
 console.log(dateTime.getUTCDateTime()); // UTC date and time
 console.log(dateTime.getRelativeTime()); // Relative time
+```
+
+### ObservatoryDateTimeZoneString Component
+
+```typescript
+import React from "react";
+import { ObservatoryDateTimeZoneString } from "bortle-astro-utils";
+
+const MyComponent = () => {
+  return <ObservatoryDateTimeZoneString utcDate={new Date()} />;
+};
+```
+
+### useObservatoryDateTimeDisplayContext Hook
+
+```typescript
+import React from "react";
+import { useObservatoryDateTimeDisplayContext, ObservatoryDateTimeDisplayProvider } from "bortle-astro-utils";
+
+const MyComponent = () => {
+  const { observatoryDateTimeDisplay, setObservatoryDateTimeDisplay } = useObservatoryDateTimeDisplayContext();
+
+  return (
+    <div>
+      <p>Current Display: {observatoryDateTimeDisplay}</p>
+      <button onClick={() => setObservatoryDateTimeDisplay("local")}>Set to Local</button>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <ObservatoryDateTimeDisplayProvider>
+      <MyComponent />
+    </ObservatoryDateTimeDisplayProvider>
+  );
+};
+```
+
+### Solar and Lunar Times
+
+```typescript
+import { getSolarTimes, getLunarInfo } from "bortle-astro-utils";
+
+const latitude = 40.7128;
+const longitude = -74.0060;
+const altitude = 10;
+const timeZone = "America/New_York";
+
+const solarTimes = getSolarTimes(latitude, longitude, altitude, timeZone);
+console.log(solarTimes);
+
+const lunarInfo = getLunarInfo(latitude, longitude, altitude, timeZone);
+console.log(lunarInfo);
+```
+
+### useTemperatureContext Hook
+
+```typescript
+import React from "react";
+import { useTemperatureContext, TempProvider } from "bortle-astro-utils";
+
+const MyComponent = () => {
+  const { temperatureUnits, setTemperatureUnits } = useTemperatureContext();
+
+  return (
+    <div>
+      <p>Current Units: {temperatureUnits}</p>
+      <button onClick={() => setTemperatureUnits("C")}>Set to Celsius</button>
+    </div>
+  );
+};
+
+const App = () => {
+  return (
+    <TempProvider>
+      <MyComponent />
+    </TempProvider>
+  );
+};
 ```
