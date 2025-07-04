@@ -6,5 +6,6 @@ export * from './utils/mpsas2bortle';
 export * from './hooks/useTemperatureContext';
 export * from './hooks/useObservatoryDateTimeContext';
 export * from './components/TemperatureString';
+export * from './components/ObservatoryDateTimeZoneString';
 export * from './classes/ObservatoryDateTime';
 export * from './utils/Astro';
