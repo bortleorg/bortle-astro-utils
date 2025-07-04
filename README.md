@@ -16,6 +16,27 @@ or
 yarn add bortle-astro-utils
 ```
 
+## Interactive Styleguide
+
+This library includes an interactive Storybook styleguide where you can explore and experiment with all React components. To run the styleguide locally:
+
+```sh
+npm run storybook
+```
+
+The styleguide includes:
+- 🎮 **Interactive component playground** - modify props and see changes in real-time
+- 📚 **Comprehensive documentation** - detailed descriptions and usage examples
+- 🌡️ **TemperatureString component** - with examples ranging from absolute zero to the Sun's surface
+- 🕐 **ObservatoryDateTimeZoneString component** - featuring astronomical dates and multiple display modes
+- 🔧 **Context providers** - properly configured for realistic component behavior
+
+Visit the styleguide to:
+- Try different temperature values and units (Fahrenheit, Celsius, Kelvin)
+- Experiment with various date/time formats (relative, observatory, local, UTC)
+- Explore real astronomical scenarios (eclipses, solstices, historical events)
+- Learn how to integrate components with context providers
+
 ## Usage
 
 ### Importing the library
