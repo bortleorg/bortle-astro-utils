@@ -16,6 +16,11 @@ const TestComponent = () => {
 };
 
 describe('ObservatoryDateTimeDisplayContext', () => {
+  beforeEach(() => {
+    // Clear localStorage before each test
+    localStorage.clear();
+  });
+
   it('should provide default values', () => {
     render(
       <ObservatoryDateTimeDisplayProvider>
@@ -25,6 +30,29 @@ describe('ObservatoryDateTimeDisplayContext', () => {
 
     expect(screen.getByText(/Current Display: relative/i)).not.toBeNull();
     expect(screen.getByText(/Current Time Zone: UTC/i)).not.toBeNull();
+  });
+
+  it('should use initialTimeZone prop when provided', () => {
+    render(
+      <ObservatoryDateTimeDisplayProvider initialTimeZone="America/Chicago">
+        <TestComponent />
+      </ObservatoryDateTimeDisplayProvider>
+    );
+
+    expect(screen.getByText(/Current Display: relative/i)).not.toBeNull();
+    expect(screen.getByText(/Current Time Zone: America\/Chicago/i)).not.toBeNull();
+  });
+
+  it('should prefer localStorage over initialTimeZone', () => {
+    localStorage.setItem('observatoryTimeZone', 'Europe/London');
+    
+    render(
+      <ObservatoryDateTimeDisplayProvider initialTimeZone="America/Chicago">
+        <TestComponent />
+      </ObservatoryDateTimeDisplayProvider>
+    );
+
+    expect(screen.getByText(/Current Time Zone: Europe\/London/i)).not.toBeNull();
   });
 
   it('should update observatoryDateTimeDisplay', () => {

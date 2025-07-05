@@ -4,12 +4,13 @@ import { ObservatoryDateTime } from "../classes/ObservatoryDateTime";
 
 export interface ObservatoryDateTimeZoneStringProps {
   utcDate: Date | string | number;
+  observatoryTimeZone?: string;
 }
 
 export const ObservatoryDateTimeZoneString = (
   props: ObservatoryDateTimeZoneStringProps,
 ) => {
-  const { observatoryDateTimeDisplay, setObservatoryDateTimeDisplay } =
+  const { observatoryDateTimeDisplay, setObservatoryDateTimeDisplay, observatoryTimeZone } =
     useObservatoryDateTimeDisplayContext();
   const [time, setTime] = React.useState(Date.now());
 
@@ -34,7 +35,9 @@ export const ObservatoryDateTimeZoneString = (
     });
   };
 
-  const observatoryDateTime = new ObservatoryDateTime(props.utcDate, "America/Chicago");
+  // Use component prop timezone if provided, otherwise use context timezone, fallback to America/Chicago
+  const effectiveTimeZone = props.observatoryTimeZone || observatoryTimeZone || "America/Chicago";
+  const observatoryDateTime = new ObservatoryDateTime(props.utcDate, effectiveTimeZone);
 
   const displayValue = () => {
     if (observatoryDateTimeDisplay === "local") {

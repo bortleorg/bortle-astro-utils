@@ -24,11 +24,12 @@ const ObservatoryDateTimeDisplayContext = createContext<ContextProps | undefined
 
 interface ObservatoryDateTimeDisplayProviderProps {
   children: ReactNode;
+  initialTimeZone?: string;
 }
 
 export const ObservatoryDateTimeDisplayProvider: React.FC<
   ObservatoryDateTimeDisplayProviderProps
-> = ({ children }) => {
+> = ({ children, initialTimeZone }) => {
   const initialDisplayValue = () => {
     const storedValue = localStorage.getItem("observatoryDateTimeDisplay");
     if (
@@ -43,7 +44,7 @@ export const ObservatoryDateTimeDisplayProvider: React.FC<
 
   const initialTimeZoneValue = () => {
     const storedValue = localStorage.getItem("observatoryTimeZone");
-    return storedValue ? storedValue : "UTC";
+    return storedValue || initialTimeZone || "UTC";
   };
 
   const [observatoryDateTimeDisplay, setObservatoryDateTimeDisplayOriginal] =

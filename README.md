@@ -145,10 +145,36 @@ console.log(dateTime.getRelativeTime()); // Relative time
 
 ```typescript
 import React from "react";
-import { ObservatoryDateTimeZoneString } from "bortle-astro-utils";
+import { ObservatoryDateTimeZoneString, ObservatoryDateTimeDisplayProvider } from "bortle-astro-utils";
 
 const MyComponent = () => {
-  return <ObservatoryDateTimeZoneString utcDate={new Date()} />;
+  return (
+    <ObservatoryDateTimeDisplayProvider initialTimeZone="America/Chicago">
+      <ObservatoryDateTimeZoneString utcDate={new Date()} />
+    </ObservatoryDateTimeDisplayProvider>
+  );
+};
+```
+
+#### With Custom TimeZone Override
+
+```typescript
+import React from "react";
+import { ObservatoryDateTimeZoneString, ObservatoryDateTimeDisplayProvider } from "bortle-astro-utils";
+
+const MyComponent = () => {
+  return (
+    <ObservatoryDateTimeDisplayProvider initialTimeZone="America/Chicago">
+      {/* Uses context timezone (Chicago) */}
+      <ObservatoryDateTimeZoneString utcDate={new Date()} />
+      
+      {/* Overrides with specific timezone */}
+      <ObservatoryDateTimeZoneString 
+        utcDate={new Date()} 
+        observatoryTimeZone="Europe/London" 
+      />
+    </ObservatoryDateTimeDisplayProvider>
+  );
 };
 ```
 
