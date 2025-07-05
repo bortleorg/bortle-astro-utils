@@ -1,0 +1,576 @@
+import type { Meta, StoryObj } from '@storybook/react';
+import React from 'react';
+import { AstroCalc, AstroPoint } from '../utils/Astro';
+
+// Interactive demo component for astronomical calculations
+const AstroCalcDemo: React.FC = () => {
+  const [selectedFunction, setSelectedFunction] = React.useState<string>('coordinate');
+  const [latitude, setLatitude] = React.useState(40.7);
+  const [longitude, setLongitude] = React.useState(-74.0);
+  const [altitude, setAltitude] = React.useState(100);
+  const [focalRatio1, setFocalRatio1] = React.useState(5.6);
+  const [focalRatio2, setFocalRatio2] = React.useState(8.0);
+  const [exposureTime, setExposureTime] = React.useState(300);
+  const [pixelSize, setPixelSize] = React.useState(3.8);
+  const [focalLength, setFocalLength] = React.useState(600);
+  const [degrees, setDegrees] = React.useState(123.456);
+
+  const coordinateConversions = {
+    hoursToDegrees: AstroCalc.hoursToDegrees(degrees / 15),
+    degreesToHours: AstroCalc.degreesToHours(degrees),
+    arcminToDegree: AstroCalc.arcminToDegree(degrees),
+    arcsecToDegree: AstroCalc.arcsecToDegree(degrees * 60),
+    degreeToArcmin: AstroCalc.degreeToArcmin(degrees),
+    degreeToArcsec: AstroCalc.degreeToArcsec(degrees),
+    degreesToDMS: AstroCalc.degreesToDMS(degrees),
+    degreesToHMS: AstroCalc.degreesToHMS(degrees)
+  };
+
+  const solarTimes = React.useMemo(() => {
+    try {
+      return AstroCalc.getSolarTimes(latitude, longitude, altitude, 'UTC');
+    } catch (error) {
+      return null;
+    }
+  }, [latitude, longitude, altitude]);
+
+  const lunarInfo = React.useMemo(() => {
+    try {
+      return AstroCalc.getLunarInfo(latitude, longitude, altitude, 'UTC');
+    } catch (error) {
+      return null;
+    }
+  }, [latitude, longitude, altitude]);
+
+  const pixelScale = React.useMemo(() => {
+    return AstroCalc.calculatePixelScale(pixelSize, focalLength);
+  }, [pixelSize, focalLength]);
+
+  const equivalentExposure = React.useMemo(() => {
+    return AstroCalc.equivalentExposureTime(exposureTime, focalRatio1, focalRatio2);
+  }, [exposureTime, focalRatio1, focalRatio2]);
+
+  const renderCoordinateDemo = () => (
+    <div style={{ padding: '20px' }}>
+      <h4>Coordinate System Conversions</h4>
+      <div style={{ marginBottom: '20px' }}>
+        <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+          Input Value: {degrees}°
+        </label>
+        <input
+          type="range"
+          min="0"
+          max="360"
+          step="0.001"
+          value={degrees}
+          onChange={(e) => setDegrees(parseFloat(e.target.value))}
+          style={{ width: '100%' }}
+          data-testid="degrees-slider"
+        />
+      </div>
+      
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '15px' }}>
+        <div style={{ padding: '15px', backgroundColor: '#f0f8ff', borderRadius: '8px' }}>
+          <h5>Angular Conversions</h5>
+          <div style={{ fontSize: '12px', marginBottom: '8px' }}>
+            <strong>Degrees to Hours:</strong> {coordinateConversions.degreesToHours.toFixed(6)}h
+          </div>
+          <div style={{ fontSize: '12px', marginBottom: '8px' }}>
+            <strong>Hours to Degrees:</strong> {coordinateConversions.hoursToDegrees.toFixed(3)}°
+          </div>
+          <div style={{ fontSize: '12px', marginBottom: '8px' }}>
+            <strong>Degrees to Arcminutes:</strong> {coordinateConversions.degreeToArcmin.toFixed(1)}'
+          </div>
+          <div style={{ fontSize: '12px' }}>
+            <strong>Degrees to Arcseconds:</strong> {coordinateConversions.degreeToArcsec.toFixed(0)}"
+          </div>
+        </div>
+        
+        <div style={{ padding: '15px', backgroundColor: '#f0fff0', borderRadius: '8px' }}>
+          <h5>Display Formats</h5>
+          <div style={{ fontSize: '12px', marginBottom: '8px' }}>
+            <strong>DMS Format:</strong><br />{coordinateConversions.degreesToDMS}
+          </div>
+          <div style={{ fontSize: '12px' }}>
+            <strong>HMS Format:</strong><br />{coordinateConversions.degreesToHMS}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderSolarLunarDemo = () => (
+    <div style={{ padding: '20px' }}>
+      <h4>Solar & Lunar Calculations</h4>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '15px', marginBottom: '20px' }}>
+        <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Latitude: {latitude}°
+          </label>
+          <input
+            type="range"
+            min="-90"
+            max="90"
+            step="0.1"
+            value={latitude}
+            onChange={(e) => setLatitude(parseFloat(e.target.value))}
+            style={{ width: '100%' }}
+            data-testid="latitude-slider"
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Longitude: {longitude}°
+          </label>
+          <input
+            type="range"
+            min="-180"
+            max="180"
+            step="0.1"
+            value={longitude}
+            onChange={(e) => setLongitude(parseFloat(e.target.value))}
+            style={{ width: '100%' }}
+            data-testid="longitude-slider"
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Altitude: {altitude}m
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="5000"
+            step="10"
+            value={altitude}
+            onChange={(e) => setAltitude(parseInt(e.target.value))}
+            style={{ width: '100%' }}
+            data-testid="altitude-slider"
+          />
+        </div>
+      </div>
+      
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+        {solarTimes && (
+          <div style={{ padding: '15px', backgroundColor: '#fff3e0', borderRadius: '8px' }}>
+            <h5>☀️ Solar Times (UTC)</h5>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Sunrise:</strong> {solarTimes.sunrise?.toString() || 'N/A'}
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Sunset:</strong> {solarTimes.sunset?.toString() || 'N/A'}
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Nautical Dawn:</strong> {solarTimes.nauticalDawn?.toString() || 'N/A'}
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Nautical Dusk:</strong> {solarTimes.nauticalDusk?.toString() || 'N/A'}
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Astronomical Dawn:</strong> {solarTimes.astronomicalDawn?.toString() || 'N/A'}
+            </div>
+            <div style={{ fontSize: '12px' }}>
+              <strong>Astronomical Dusk:</strong> {solarTimes.astronomicalDusk?.toString() || 'N/A'}
+            </div>
+          </div>
+        )}
+        
+        {lunarInfo && (
+          <div style={{ padding: '15px', backgroundColor: '#f3e5f5', borderRadius: '8px' }}>
+            <h5>🌙 Lunar Information</h5>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Moonrise:</strong> {lunarInfo.moonrise?.toString() || 'N/A'}
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Moonset:</strong> {lunarInfo.moonset?.toString() || 'N/A'}
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Phase:</strong> {lunarInfo.illuminationInfo.phaseName}
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Illumination:</strong> {(lunarInfo.illuminationInfo.fraction * 100).toFixed(1)}%
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              <strong>Phase Angle:</strong> {lunarInfo.illuminationInfo.phaseAngle}°
+            </div>
+            <div style={{ fontSize: '12px' }}>
+              <strong>Magnitude:</strong> {lunarInfo.illuminationInfo.magnitude.toFixed(1)}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
+  const renderImagingDemo = () => (
+    <div style={{ padding: '20px' }}>
+      <h4>Astrophotography Calculations</h4>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px', marginBottom: '20px' }}>
+        <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Pixel Size: {pixelSize}μm
+          </label>
+          <input
+            type="range"
+            min="1"
+            max="15"
+            step="0.1"
+            value={pixelSize}
+            onChange={(e) => setPixelSize(parseFloat(e.target.value))}
+            style={{ width: '100%' }}
+            data-testid="pixel-size-slider"
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Focal Length: {focalLength}mm
+          </label>
+          <input
+            type="range"
+            min="50"
+            max="3000"
+            step="10"
+            value={focalLength}
+            onChange={(e) => setFocalLength(parseInt(e.target.value))}
+            style={{ width: '100%' }}
+            data-testid="focal-length-slider"
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            F/Ratio 1: f/{focalRatio1}
+          </label>
+          <input
+            type="range"
+            min="1"
+            max="15"
+            step="0.1"
+            value={focalRatio1}
+            onChange={(e) => setFocalRatio1(parseFloat(e.target.value))}
+            style={{ width: '100%' }}
+            data-testid="focal-ratio1-slider"
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            F/Ratio 2: f/{focalRatio2}
+          </label>
+          <input
+            type="range"
+            min="1"
+            max="15"
+            step="0.1"
+            value={focalRatio2}
+            onChange={(e) => setFocalRatio2(parseFloat(e.target.value))}
+            style={{ width: '100%' }}
+            data-testid="focal-ratio2-slider"
+          />
+        </div>
+        <div>
+          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
+            Exposure: {exposureTime}s
+          </label>
+          <input
+            type="range"
+            min="1"
+            max="1800"
+            step="1"
+            value={exposureTime}
+            onChange={(e) => setExposureTime(parseInt(e.target.value))}
+            style={{ width: '100%' }}
+            data-testid="exposure-slider"
+          />
+        </div>
+      </div>
+      
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '15px' }}>
+        <div style={{ padding: '15px', backgroundColor: '#e8f5e8', borderRadius: '8px' }}>
+          <h5>📐 Pixel Scale</h5>
+          <div style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '5px' }}>
+            {pixelScale.toFixed(2)} arcsec/pixel
+          </div>
+          <div style={{ fontSize: '12px', color: '#666' }}>
+            Angular resolution per pixel
+          </div>
+        </div>
+        
+        <div style={{ padding: '15px', backgroundColor: '#e3f2fd', borderRadius: '8px' }}>
+          <h5>⏱️ Equivalent Exposure</h5>
+          <div style={{ fontSize: '14px', marginBottom: '8px' }}>
+            <strong>f/{focalRatio1}:</strong> {exposureTime}s
+          </div>
+          <div style={{ fontSize: '14px' }}>
+            <strong>f/{focalRatio2}:</strong> {equivalentExposure.toFixed(1)}s
+          </div>
+          <div style={{ fontSize: '12px', color: '#666', marginTop: '5px' }}>
+            Exposure time for same signal
+          </div>
+        </div>
+        
+        <div style={{ padding: '15px', backgroundColor: '#fff3e0', borderRadius: '8px' }}>
+          <h5>🔍 Sampling</h5>
+          <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+            Pixel scale determines how well your setup samples the seeing disk
+          </div>
+          <div style={{ fontSize: '12px' }}>
+            Optimal: 1-2 arcsec/pixel for typical seeing
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div style={{ 
+      padding: '20px', 
+      fontFamily: 'Arial, sans-serif',
+      maxWidth: '1000px'
+    }}>
+      <h3>Astronomical Calculations</h3>
+      <p style={{ marginBottom: '20px', color: '#666' }}>
+        Comprehensive astronomical calculation utilities including coordinate conversions, 
+        solar/lunar ephemeris, and astrophotography planning tools.
+      </p>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+          <button
+            onClick={() => setSelectedFunction('coordinate')}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: selectedFunction === 'coordinate' ? '#2196f3' : '#f5f5f5',
+              color: selectedFunction === 'coordinate' ? 'white' : 'black',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+            data-testid="coordinate-tab"
+          >
+            📐 Coordinates
+          </button>
+          <button
+            onClick={() => setSelectedFunction('ephemeris')}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: selectedFunction === 'ephemeris' ? '#2196f3' : '#f5f5f5',
+              color: selectedFunction === 'ephemeris' ? 'white' : 'black',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+            data-testid="ephemeris-tab"
+          >
+            🌞🌙 Solar/Lunar
+          </button>
+          <button
+            onClick={() => setSelectedFunction('imaging')}
+            style={{
+              padding: '10px 20px',
+              backgroundColor: selectedFunction === 'imaging' ? '#2196f3' : '#f5f5f5',
+              color: selectedFunction === 'imaging' ? 'white' : 'black',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+            data-testid="imaging-tab"
+          >
+            📸 Imaging
+          </button>
+        </div>
+        
+        <div style={{ 
+          border: '2px solid #ddd', 
+          borderRadius: '8px', 
+          backgroundColor: '#f9f9f9',
+          minHeight: '400px'
+        }}>
+          {selectedFunction === 'coordinate' && renderCoordinateDemo()}
+          {selectedFunction === 'ephemeris' && renderSolarLunarDemo()}
+          {selectedFunction === 'imaging' && renderImagingDemo()}
+        </div>
+      </div>
+      
+      <div style={{ 
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+        gap: '15px',
+        marginBottom: '20px'
+      }}>
+        <div style={{ 
+          padding: '15px',
+          backgroundColor: '#f0f8ff',
+          borderRadius: '4px',
+          fontSize: '12px'
+        }}>
+          <strong>🌐 Coordinate Systems:</strong><br />
+          Convert between different angular measurement systems used in astronomy
+          for precise object positioning.
+        </div>
+        
+        <div style={{ 
+          padding: '15px',
+          backgroundColor: '#f0fff0',
+          borderRadius: '4px',
+          fontSize: '12px'
+        }}>
+          <strong>🌅 Ephemeris Data:</strong><br />
+          Calculate precise times for solar and lunar events essential for
+          planning observing sessions.
+        </div>
+        
+        <div style={{ 
+          padding: '15px',
+          backgroundColor: '#fffef0',
+          borderRadius: '4px',
+          fontSize: '12px'
+        }}>
+          <strong>📷 Imaging Calculations:</strong><br />
+          Determine pixel scales, equivalent exposures, and optimize camera/telescope
+          combinations for astrophotography.
+        </div>
+        
+        <div style={{ 
+          padding: '15px',
+          backgroundColor: '#fff0f0',
+          borderRadius: '4px',
+          fontSize: '12px'
+        }}>
+          <strong>🎯 Precision Required:</strong><br />
+          Astronomical calculations demand high precision. These utilities use
+          proven algorithms and libraries for accuracy.
+        </div>
+      </div>
+      
+      <div style={{ 
+        padding: '15px',
+        backgroundColor: '#f0f8ff',
+        borderRadius: '4px',
+        fontSize: '12px',
+        color: '#666'
+      }}>
+        <strong>Technical Notes:</strong><br />
+        • Uses astronomy-engine library for ephemeris calculations<br />
+        • Coordinates support HMS/DMS display formats<br />
+        • Exposure calculations account for f/ratio differences<br />
+        • Pixel scale calculations use standard 206.265 arcsec/radian conversion<br />
+        • All times calculated in specified timezone or UTC
+      </div>
+    </div>
+  );
+};
+
+const meta: Meta<typeof AstroCalcDemo> = {
+  title: 'Utils/Astro',
+  component: AstroCalcDemo,
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Comprehensive astronomical calculation utilities including coordinate conversions, solar/lunar ephemeris calculations, and astrophotography planning tools using the astronomy-engine library.'
+      }
+    }
+  },
+  tags: ['autodocs'],
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Interactive: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Interactive astronomical calculation suite with coordinate conversions, ephemeris data, and imaging calculations. Switch between tabs to explore different calculation categories.'
+      }
+    }
+  }
+};
+
+export const CoordinateConversions: Story = {
+  render: () => {
+    const degrees = 123.456;
+    const point = new AstroPoint(123.456, 45.678);
+    
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h3>Coordinate System Conversions</h3>
+        <div style={{ fontSize: '48px', margin: '20px 0' }}>📐</div>
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '15px',
+          textAlign: 'left'
+        }}>
+          <div style={{ 
+            padding: '15px',
+            backgroundColor: '#f0f8ff',
+            borderRadius: '8px'
+          }}>
+            <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>Input: {degrees}°</div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              Hours: {AstroCalc.degreesToHours(degrees).toFixed(6)}h
+            </div>
+            <div style={{ fontSize: '12px', marginBottom: '4px' }}>
+              DMS: {AstroCalc.degreesToDMS(degrees)}
+            </div>
+            <div style={{ fontSize: '12px' }}>
+              HMS: {AstroCalc.degreesToHMS(degrees)}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Coordinate conversion example showing transformation between degrees, hours, and display formats (DMS/HMS).'
+      }
+    }
+  }
+};
+
+export const PixelScaleCalculation: Story = {
+  render: () => {
+    const pixelSize = 3.8; // micrometers
+    const focalLength = 600; // millimeters
+    const pixelScale = AstroCalc.calculatePixelScale(pixelSize, focalLength);
+    
+    return (
+      <div style={{ padding: '20px', textAlign: 'center' }}>
+        <h3>Pixel Scale Calculation</h3>
+        <div style={{ fontSize: '48px', margin: '20px 0' }}>📏</div>
+        <div style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '10px' }}>
+          {pixelScale.toFixed(2)} arcsec/pixel
+        </div>
+        <div style={{ 
+          color: '#666',
+          fontSize: '14px',
+          marginBottom: '20px'
+        }}>
+          {pixelSize}μm pixels at {focalLength}mm focal length
+        </div>
+        <div style={{ 
+          padding: '15px',
+          backgroundColor: '#f0f8ff',
+          borderRadius: '8px',
+          fontSize: '12px',
+          maxWidth: '400px',
+          margin: '0 auto'
+        }}>
+          <strong>Sampling Guidelines:</strong><br />
+          • 1-2 arcsec/pixel: Good for typical seeing<br />
+          • &lt;1 arcsec/pixel: Oversampled, smaller stars<br />
+          • &gt;3 arcsec/pixel: Undersampled, loss of detail
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Pixel scale calculation example showing how to determine the angular resolution per pixel for astrophotography setup optimization.'
+      }
+    }
+  }
+};
