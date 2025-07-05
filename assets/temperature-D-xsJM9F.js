@@ -1,0 +1,1 @@
+function e(n){return n-273.15}function i(n){return(n-273.15)*9/5+32}function r(n){return n*9/5+32}function t(n){return(n-32)*5/9}function u(n){return(n-32)*5/9+273.15}function s(n){return n+273.15}export{s as a,e as b,r as c,u as d,t as f,i as k};
