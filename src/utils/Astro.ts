@@ -6,6 +6,7 @@ import {
   SearchRiseSet,
   Body,
   Illumination,
+  MoonPhase,
 } from "astronomy-engine";
 import Decimal from "decimal.js";
 import { ObservatoryDateTime } from "../classes/ObservatoryDateTime";
@@ -128,9 +129,9 @@ export class AstroCalc {
 
     // Get moon illumination information at current time
     const illumination = Illumination(Body.Moon, now);
+    const phaseAngle = Math.round(MoonPhase(now));
 
     // Determine the moon's phase angle and fraction illuminated
-    const phaseAngle = Math.round(illumination.phase_angle); // In degrees
     const fraction = illumination.phase_fraction; // Between 0 and 1
     const magnitude = illumination.mag; // Apparent visual magnitude
 
@@ -151,17 +152,26 @@ export class AstroCalc {
     };
   }
 
+
   static getMoonPhaseName(phaseAngle: number): string {
-    if (phaseAngle >= 170 && phaseAngle <= 180) {
+    if (phaseAngle >= 0 && phaseAngle < 10) {
       return "New Moon";
-    } else if (phaseAngle >= 135 && phaseAngle < 170) {
-      return "Waning Crescent";
-    } else if (phaseAngle >= 100 && phaseAngle < 135) {
-      return "Last Quarter";
-    } else if (phaseAngle >= 90 && phaseAngle < 100) {
-      return "Waning Gibbous";
-    } else if (phaseAngle >= 0 && phaseAngle < 90) {
+    } else if (phaseAngle >= 10 && phaseAngle < 80) {
+      return "Waxing Crescent";
+    } else if (phaseAngle >= 80 && phaseAngle < 100) {
+      return "First Quarter";
+    } else if (phaseAngle >= 100 && phaseAngle < 170) {
+      return "Waxing Gibbous";
+    } else if (phaseAngle >= 170 && phaseAngle <= 180) {
       return "Full Moon";
+    } else if (phaseAngle > 180 && phaseAngle < 260) {
+      return "Waning Gibbous";
+    } else if (phaseAngle >= 260 && phaseAngle < 280) {
+      return "Last Quarter";
+    } else if (phaseAngle >= 280 && phaseAngle < 350) {
+      return "Waning Crescent";
+    } else if (phaseAngle >= 350 && phaseAngle <= 360) {
+      return "New Moon";
     } else {
       return "Unknown Phase";
     }
