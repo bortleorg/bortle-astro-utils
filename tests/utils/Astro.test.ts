@@ -66,13 +66,31 @@ describe("AstroCalc", () => {
       expect(lunarInfo).toHaveProperty("moonrise");
       expect(lunarInfo).toHaveProperty("moonset");
       expect(lunarInfo).toHaveProperty("illuminationInfo");
+      expect(typeof lunarInfo.illuminationInfo.phaseName).toBe("string");
     });
   });
 
+
   describe("getMoonPhaseName", () => {
-    it("should return moon phase name", () => {
-      expect(AstroCalc.getMoonPhaseName(0)).toBe("Full Moon");
-      expect(AstroCalc.getMoonPhaseName(180)).toBe("New Moon");
+    it("should return the correct moon phase name", () => {
+      expect(AstroCalc.getMoonPhaseName(0)).toBe("New Moon");
+      expect(AstroCalc.getMoonPhaseName(5)).toBe("New Moon");
+      expect(AstroCalc.getMoonPhaseName(10)).toBe("Waxing Crescent");
+      expect(AstroCalc.getMoonPhaseName(45)).toBe("Waxing Crescent");
+      expect(AstroCalc.getMoonPhaseName(80)).toBe("First Quarter");
+      expect(AstroCalc.getMoonPhaseName(90)).toBe("First Quarter");
+      expect(AstroCalc.getMoonPhaseName(100)).toBe("Waxing Gibbous");
+      expect(AstroCalc.getMoonPhaseName(135)).toBe("Waxing Gibbous");
+      expect(AstroCalc.getMoonPhaseName(170)).toBe("Full Moon");
+      expect(AstroCalc.getMoonPhaseName(180)).toBe("Full Moon");
+      expect(AstroCalc.getMoonPhaseName(190)).toBe("Waning Gibbous");
+      expect(AstroCalc.getMoonPhaseName(225)).toBe("Waning Gibbous");
+      expect(AstroCalc.getMoonPhaseName(260)).toBe("Last Quarter");
+      expect(AstroCalc.getMoonPhaseName(270)).toBe("Last Quarter");
+      expect(AstroCalc.getMoonPhaseName(280)).toBe("Waning Crescent");
+      expect(AstroCalc.getMoonPhaseName(315)).toBe("Waning Crescent");
+      expect(AstroCalc.getMoonPhaseName(350)).toBe("New Moon");
+      expect(AstroCalc.getMoonPhaseName(360)).toBe("New Moon");
     });
   });
 
