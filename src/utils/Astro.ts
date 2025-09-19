@@ -129,7 +129,7 @@ export class AstroCalc {
 
     // Get moon illumination information at current time
     const illumination = Illumination(Body.Moon, now);
-    const phaseAngle = MoonPhase(now);
+    const phaseAngle = Math.round(MoonPhase(now));
 
     // Determine the moon's phase angle and fraction illuminated
     const fraction = illumination.phase_fraction; // Between 0 and 1
