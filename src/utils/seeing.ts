@@ -4,7 +4,7 @@
  * @returns The seeing description.
  */
 function getSeeingDescription(value: number): string {
-  switch (value) {
+  switch (Math.floor(value)) {
     case 0:
       return "Cloudy";
     case 1:

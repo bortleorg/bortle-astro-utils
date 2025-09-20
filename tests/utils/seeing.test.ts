@@ -10,4 +10,8 @@ describe('Seeing Description Function', () => {
     expect(getSeeingDescription(5)).toBe("Excellent");
     expect(getSeeingDescription(6)).toBe("Unknown");
   });
+
+  test('getSeeingDescription with float value', () => {
+    expect(getSeeingDescription(2.7)).toBe("Below Average");
+  });
 });
