@@ -155,6 +155,10 @@ export class AstroCalc {
 
 
   static getMoonPhaseName(phaseAngle: number): string {
+    // Guard against non-finite inputs to avoid misclassifying invalid values.
+    if (!Number.isFinite(phaseAngle)) {
+      return "Unknown Phase";
+    }
     // Normalize to [0, 360)
     const angle = ((phaseAngle % 360) + 360) % 360;
 
