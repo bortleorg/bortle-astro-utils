@@ -23,11 +23,11 @@ describe('ObservatoryDateTimeZoneString', () => {
 
   it('should toggle display modes', () => {
     render(<TestComponent utcDate={new Date('2022-01-01T00:00:00Z')} observatoryTimeZone="Pacific/Honolulu" />);
-    fireEvent.click(screen.getByText(/over \d+ years ago/i));
+    fireEvent.click(screen.getByText(/(about|over|almost) \d+ years? ago/i));
     fireEvent.click(screen.getByText(/12\/31\/21, .+ PM HST/i));
     fireEvent.click(screen.getByText(/12\/31\/21, .+ PM EST/i));
     fireEvent.click(screen.getByText(/1\/1\/22, .+ AM UTC/i));
-    fireEvent.click(screen.getByText(/over \d+ years ago/i));
+    fireEvent.click(screen.getByText(/(about|over|almost) \d+ years? ago/i));
     fireEvent.click(screen.getByText(/12\/31\/21, .+ PM HST/i));
   });
 
@@ -35,7 +35,7 @@ describe('ObservatoryDateTimeZoneString', () => {
     render(<TestComponent utcDate={new Date('2022-01-01T12:00:00Z')} observatoryTimeZone="Europe/London" />);
     
     // Click to get to observatory mode
-    const element = screen.getByText(/over \d+ years ago/i);
+    const element = screen.getByText(/(about|over|almost) \d+ years? ago/i);
     fireEvent.click(element);
     
     // Should show London time (GMT)
@@ -46,7 +46,7 @@ describe('ObservatoryDateTimeZoneString', () => {
     render(<TestComponentWithContextTimeZone utcDate={new Date('2022-01-01T12:00:00Z')} initialTimeZone="America/New_York" />);
     
     // Click to get to observatory mode
-    const element = screen.getByText(/over \d+ years ago/i);
+    const element = screen.getByText(/(about|over|almost) \d+ years? ago/i);
     fireEvent.click(element);
     
     // Should show Tokyo time (JST)
@@ -64,7 +64,7 @@ describe('ObservatoryDateTimeZoneString', () => {
     );
     
     // Click to get to observatory mode
-    const element = screen.getByText(/over \d+ years ago/i);
+    const element = screen.getByText(/(about|over|almost) \d+ years? ago/i);
     fireEvent.click(element);
     
     // Should show Hawaii time (HST), not New York time
