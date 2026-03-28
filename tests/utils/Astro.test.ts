@@ -72,25 +72,64 @@ describe("AstroCalc", () => {
 
 
   describe("getMoonPhaseName", () => {
-    it("should return the correct moon phase name", () => {
+    it("should return the correct moon phase name for representative angles", () => {
+      // New Moon: [337.5, 360) and [0, 22.5)
       expect(AstroCalc.getMoonPhaseName(0)).toBe("New Moon");
       expect(AstroCalc.getMoonPhaseName(5)).toBe("New Moon");
-      expect(AstroCalc.getMoonPhaseName(10)).toBe("Waxing Crescent");
+      expect(AstroCalc.getMoonPhaseName(350)).toBe("New Moon");
+      // Waxing Crescent: [22.5, 67.5)
       expect(AstroCalc.getMoonPhaseName(45)).toBe("Waxing Crescent");
+      // First Quarter: [67.5, 112.5)
       expect(AstroCalc.getMoonPhaseName(80)).toBe("First Quarter");
       expect(AstroCalc.getMoonPhaseName(90)).toBe("First Quarter");
-      expect(AstroCalc.getMoonPhaseName(100)).toBe("Waxing Gibbous");
+      expect(AstroCalc.getMoonPhaseName(100)).toBe("First Quarter");
+      // Waxing Gibbous: [112.5, 157.5)
       expect(AstroCalc.getMoonPhaseName(135)).toBe("Waxing Gibbous");
+      // Full Moon: [157.5, 202.5)
       expect(AstroCalc.getMoonPhaseName(170)).toBe("Full Moon");
       expect(AstroCalc.getMoonPhaseName(180)).toBe("Full Moon");
-      expect(AstroCalc.getMoonPhaseName(190)).toBe("Waning Gibbous");
+      expect(AstroCalc.getMoonPhaseName(190)).toBe("Full Moon");
+      // Waning Gibbous: [202.5, 247.5)
       expect(AstroCalc.getMoonPhaseName(225)).toBe("Waning Gibbous");
-      expect(AstroCalc.getMoonPhaseName(260)).toBe("Last Quarter");
-      expect(AstroCalc.getMoonPhaseName(270)).toBe("Last Quarter");
-      expect(AstroCalc.getMoonPhaseName(280)).toBe("Waning Crescent");
+      // Third Quarter: [247.5, 292.5)
+      expect(AstroCalc.getMoonPhaseName(260)).toBe("Third Quarter");
+      expect(AstroCalc.getMoonPhaseName(270)).toBe("Third Quarter");
+      expect(AstroCalc.getMoonPhaseName(280)).toBe("Third Quarter");
+      // Waning Crescent: [292.5, 337.5)
       expect(AstroCalc.getMoonPhaseName(315)).toBe("Waning Crescent");
-      expect(AstroCalc.getMoonPhaseName(350)).toBe("New Moon");
-      expect(AstroCalc.getMoonPhaseName(360)).toBe("New Moon");
+    });
+
+    it("should handle bin boundary values correctly", () => {
+      expect(AstroCalc.getMoonPhaseName(22.5)).toBe("Waxing Crescent");
+      expect(AstroCalc.getMoonPhaseName(67.5)).toBe("First Quarter");
+      expect(AstroCalc.getMoonPhaseName(112.5)).toBe("Waxing Gibbous");
+      expect(AstroCalc.getMoonPhaseName(157.5)).toBe("Full Moon");
+      expect(AstroCalc.getMoonPhaseName(202.5)).toBe("Waning Gibbous");
+      expect(AstroCalc.getMoonPhaseName(247.5)).toBe("Third Quarter");
+      expect(AstroCalc.getMoonPhaseName(292.5)).toBe("Waning Crescent");
+      expect(AstroCalc.getMoonPhaseName(337.5)).toBe("New Moon");
+    });
+
+    it("should normalize angles outside [0, 360)", () => {
+      expect(AstroCalc.getMoonPhaseName(360)).toBe("New Moon"); // 360 → 0
+      expect(AstroCalc.getMoonPhaseName(450)).toBe("First Quarter"); // 450 → 90
+      expect(AstroCalc.getMoonPhaseName(-90)).toBe("Third Quarter"); // -90 → 270
+    });
+  });
+
+  describe("getLunarInfo illumination consistency", () => {
+    it("phaseName, phaseAngle, and fraction should be mutually consistent", () => {
+      const lunarInfo = AstroCalc.getLunarInfo(0, 0, 0, "America/New_York");
+      const { phaseAngle, fraction, phaseName } = lunarInfo.illuminationInfo;
+
+      // fraction must be derived from the same phase angle as phaseName.
+      // phaseAngle is the rounded integer; allow tolerance for the rounding error
+      // (max ~0.005 for integer-degree rounding near the quarter phases).
+      const expectedFraction = (1 - Math.cos(phaseAngle * (Math.PI / 180))) / 2;
+      expect(fraction).toBeCloseTo(expectedFraction, 2);
+
+      // phaseName must match the bin for phaseAngle
+      expect(phaseName).toBe(AstroCalc.getMoonPhaseName(phaseAngle));
     });
   });
 
