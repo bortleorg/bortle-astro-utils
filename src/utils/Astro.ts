@@ -129,14 +129,15 @@ export class AstroCalc {
 
     // Get moon illumination information at current time
     const illumination = Illumination(Body.Moon, now);
-    const phaseAngle = Math.round(MoonPhase(now));
+    const moonPhase = MoonPhase(now);
+    const phaseAngle = ((Math.round(moonPhase) % 360) + 360) % 360;
 
-    // Determine the moon's phase angle and fraction illuminated
-    const fraction = illumination.phase_fraction; // Between 0 and 1
+    // Derive fraction from the same phase angle to ensure consistency
+    const fraction = (1 - Math.cos(moonPhase * (Math.PI / 180))) / 2;
     const magnitude = illumination.mag; // Apparent visual magnitude
 
-    // Map phase angle to phase name
-    const phaseName = this.getMoonPhaseName(phaseAngle);
+    // Map phase angle to phase name using the same canonical source
+    const phaseName = this.getMoonPhaseName(moonPhase);
 
     return {
       moonrise: moonriseEvent
@@ -154,26 +155,31 @@ export class AstroCalc {
 
 
   static getMoonPhaseName(phaseAngle: number): string {
-    if (phaseAngle >= 0 && phaseAngle < 10) {
-      return "New Moon";
-    } else if (phaseAngle >= 10 && phaseAngle < 80) {
-      return "Waxing Crescent";
-    } else if (phaseAngle >= 80 && phaseAngle < 100) {
-      return "First Quarter";
-    } else if (phaseAngle >= 100 && phaseAngle < 170) {
-      return "Waxing Gibbous";
-    } else if (phaseAngle >= 170 && phaseAngle <= 180) {
-      return "Full Moon";
-    } else if (phaseAngle > 180 && phaseAngle < 260) {
-      return "Waning Gibbous";
-    } else if (phaseAngle >= 260 && phaseAngle < 280) {
-      return "Last Quarter";
-    } else if (phaseAngle >= 280 && phaseAngle < 350) {
-      return "Waning Crescent";
-    } else if (phaseAngle >= 350 && phaseAngle <= 360) {
-      return "New Moon";
-    } else {
+    // Guard against non-finite inputs to avoid misclassifying invalid values.
+    if (!Number.isFinite(phaseAngle)) {
       return "Unknown Phase";
+    }
+    // Normalize to [0, 360)
+    const angle = ((phaseAngle % 360) + 360) % 360;
+
+    // 8-phase mapping using symmetric 45° bins centered on cardinal phases:
+    // New Moon (0°), First Quarter (90°), Full Moon (180°), Third Quarter (270°)
+    if (angle >= 337.5 || angle < 22.5) {
+      return "New Moon";
+    } else if (angle < 67.5) {
+      return "Waxing Crescent";
+    } else if (angle < 112.5) {
+      return "First Quarter";
+    } else if (angle < 157.5) {
+      return "Waxing Gibbous";
+    } else if (angle < 202.5) {
+      return "Full Moon";
+    } else if (angle < 247.5) {
+      return "Waning Gibbous";
+    } else if (angle < 292.5) {
+      return "Third Quarter";
+    } else {
+      return "Waning Crescent";
     }
   }
 
